@@ -52,22 +52,21 @@ public class UserCommentWritable extends LongWritable implements Writable {
     }
 
     public void isLarge(Text body, LongWritable votes){
-        checkIfLarges(body, votes);
-      /*  if(!checkIfLarges(body, votes)){
+       if(!checkIfLarges(body, votes)){
             if(!checkIfSecondLarges(body, votes)){
                 if(!checkIftheirdLargest(body, votes)){
 
                 }
             }
-        }*/
+        }
     }
 
 
-    private boolean checkIfLarges(Text body, LongWritable votes){
+    public boolean checkIfLarges(Text body, LongWritable votes){
         if (this.largestNum.get() < votes.get()) {
-           // checkIfSecondLarges(this.largestText, this.largestNum);
-            this.largestNum = votes;
-            this.largestText = body;
+            checkIfSecondLarges(this.largestText, this.largestNum);
+            this.largestNum.set(votes.get());
+            this.largestText.set(body);
             return true;
         }
         return false;
@@ -76,8 +75,8 @@ public class UserCommentWritable extends LongWritable implements Writable {
     private boolean checkIfSecondLarges(Text body, LongWritable votes ){
         if(this.secondLargestNum.get() < votes.get()){
             checkIftheirdLargest(this.secondLargestText, this.secondLargestNum);
-            this.secondLargestNum = votes;
-            this.secondLargestText = body;
+            this.secondLargestNum.set(votes.get());
+            this.secondLargestText.set(body);
             return true;
         }
         return false;
@@ -85,8 +84,8 @@ public class UserCommentWritable extends LongWritable implements Writable {
 
     private boolean checkIftheirdLargest(Text body, LongWritable votes ){
         if(this.theirdLargestnum.get() < votes.get()){
-            this.theirdLargestnum = votes;
-            this.theirdLargestText = body;
+            this.theirdLargestnum.set(votes.get());
+            this.theirdLargestText.set(body);
             return true;
         }
         return false;
@@ -114,6 +113,8 @@ public class UserCommentWritable extends LongWritable implements Writable {
 
     @Override
     public String toString() {
-        return "\nComment count: " + this.largestNum.get()+ "\nText: " + this.largestText.toString() + "\n";
+        return "\nTop comment count: " + this.largestNum.get()+ "\nText: " + this.largestText.toString() + "\n" +
+                "\nSecond bes comment count: " + this.secondLargestNum.get()+ "\nText: " + this.secondLargestText.toString() + "\n"+
+                "\nThird comment count: " + this.theirdLargestnum.get()+ "\nText: " + this.theirdLargestText.toString() + "\n";
     }
 }

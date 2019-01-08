@@ -1,4 +1,4 @@
-package topThreeComments;
+package SignificantDay;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -6,8 +6,12 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import topThreeComments.TopThreeCommentsJob;
+import topThreeComments.TopThreeCommentsMapper;
+import topThreeComments.TopThreeCommentsReducer;
+import topThreeComments.UserCommentWritable;
 
-public class TopThreeCommentsJob {
+public class SignificantJob {
     public static void main(String[] args) {
         try {
             Configuration conf = new Configuration();
@@ -16,11 +20,12 @@ public class TopThreeCommentsJob {
             Job job = Job.getInstance(conf, "Finding user comments counts");
 
             /* Current class */
-            job.setJarByClass(TopThreeCommentsJob.class);
+            job.setJarByClass(SignificantJob.class);
 
             /* Mapper class */
-            job.setMapperClass(TopThreeCommentsMapper.class);
-            job.setNumReduceTasks(12);
+            job.setMapperClass(SignificantDayMapper.class);
+            job.setNumReduceTasks(1);
+
             /* Combiner class. Combiners are run between the Map and Reduce
              * phases to reduce the amount of output that must be transmitted.
              * In some situations, we can actually use the Reducer as a Combiner
@@ -30,16 +35,16 @@ public class TopThreeCommentsJob {
             //job.setCombinerClass(WordCountReducer.class);
 
             /* Reducer class */
-            job.setReducerClass(TopThreeCommentsReducer.class);
+            job.setReducerClass(SignificantDayReducer.class);
 
             /* Outputs from the Mapper. */
             job.setMapOutputKeyClass(Text.class);
-            job.setMapOutputValueClass(UserCommentWritable.class);
+            job.setMapOutputValueClass(Text.class);
 
             /* Outputs from the Reducer */
             job.setOutputKeyClass(Text.class);
 
-            job.setOutputValueClass(UserCommentWritable.class);
+            job.setOutputValueClass(Text.class);
 
             /* Job input path in HDFS */
             FileInputFormat.addInputPath(job, new Path(args[0]));

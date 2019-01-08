@@ -16,7 +16,7 @@ public class TopThreeCommentsMapper extends Mapper<LongWritable, Text, Text, Use
         // tokenize into words.
 
         JSONObject obj = new JSONObject(value.toString());
-        String author1 = "Algaroth";
+        String author1 = "JonAudette";
         String currAuthor = obj.getString("author");
 
         if(currAuthor.equals(author1)) {

@@ -17,12 +17,14 @@ public class UserCommentMapper extends Mapper<LongWritable, Text, Text, UserWrit
         // tokenize into words.
         JSONObject obj = null;
         UserWritable userWritable = new UserWritable();
+        obj = new JSONObject(value.toString());
 
-        try {
-            obj = new JSONObject(value.toString());
-            context.write(new Text(obj.getString("author")), userWritable);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if(!(obj.getString("author").equals("[deleted]"))) {
+            try {
+                context.write(new Text(obj.getString("author")), userWritable);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

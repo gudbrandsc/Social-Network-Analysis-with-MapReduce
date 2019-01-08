@@ -24,16 +24,9 @@ public class UserCommentReducer extends Reducer<Text, UserWritable, Text, UserWr
         for(UserWritable val : values) {
             uw.incrementCount(val);
         }
+        context.write(key, uw);
 
-
-
-       if(!checkIfLarges(key,uw)){
-            if(!checkIfSecondLarges(key,uw)){
-                if(!checkIftheirdLargest(key,uw)){
-
-                }
-            }
-       }
+        //  checkIfLarges(key, uw);
     }
 
     private boolean checkIfLarges(Text key, UserWritable userWritable){
@@ -43,7 +36,6 @@ public class UserCommentReducer extends Reducer<Text, UserWritable, Text, UserWr
             return true;
         }else {
             if( this.largest.getCount().get() < userWritable.getCount().get()){
-                checkIfSecondLarges(this.largestKey, this.largest);
                 this.largest = userWritable;
                 this.largestKey.set(key);
                 return true;
@@ -53,51 +45,16 @@ public class UserCommentReducer extends Reducer<Text, UserWritable, Text, UserWr
         }
     }
 
-    private boolean checkIfSecondLarges(Text key, UserWritable userWritable){
-        if(this.secondLargest == null){
-            this.secondLargest = userWritable;
-            this.secondLargestKey.set(key);
-            return true;
-        }else {
-            if(this.secondLargest.getCount().get() < userWritable.getCount().get()){
-                checkIftheirdLargest(this.secondLargestKey, this.secondLargest);
-                this.secondLargest = userWritable;
-                this.secondLargestKey.set(key);
-                return true;
-            }else {
-                return false;
-
-            }
-
-        }
-    }
-
-    private boolean checkIftheirdLargest(Text key, UserWritable userWritable){
-        if(this.theirdLargest == null){
-            this.theirdLargest = userWritable;
-            this.theirdLargestKey.set(key);
-            return true;
-        }else {
-            if(this.theirdLargest.getCount().get() < userWritable.getCount().get()){
-                this.theirdLargest = userWritable;
-                this.theirdLargestKey.set(key);
-                return true;
-            } else {
-                return false;
-
-            }
-        }
-    }
 
 
 
 
+/*
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
         context.write(this.largestKey, this.largest);
-        context.write(this.secondLargestKey, this.secondLargest);
-        context.write(this.theirdLargestKey, this.theirdLargest);
 
 
-    }
+
+    }*/
 }

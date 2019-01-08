@@ -20,11 +20,10 @@ public class SubRedditMapper extends Mapper<LongWritable, Text, Text, IntWritabl
 
         try {
             obj = new JSONObject(value.toString());
-            context.write(new Text(obj.getString("subreddit")), new IntWritable(1));
+            context.write(new Text(obj.getString("author")), new IntWritable(1));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        // emit word, count pairs.
     }
 }
